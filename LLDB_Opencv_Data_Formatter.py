@@ -83,12 +83,15 @@ def getArray(valobj, matInfo):
 
     np_dtype = {
         'CV_8U': np.uint8,
+        'CV_8S': np.int8,
         'CV_16U': np.uint16,
+        'CV_16S': np.int16,
         'CV_32F': np.float32,
+        'CV_32S': np.int32,
         'CV_64F': np.float64,
     }.get(cv_type_name, None)
     if np_dtype is None:
-        return None
+        return 'Unsupported type: {}'.format(cv_type_name)
 
     error = lldb.SBError()
     memory_data = valobj.GetProcess().ReadMemory(data_address, line_step * height,
