@@ -1,7 +1,4 @@
 import sys
-
-sys.path.insert(0, '/home/longc/anaconda3/lib/python3.6/site-packages')
-
 import lldb
 import numpy as np
 
@@ -97,7 +94,13 @@ def getArray(valobj, matInfo):
     memory_data = valobj.GetProcess().ReadMemory(data_address, line_step * height,
                                                  error)
     arr = np.fromstring(memory_data, dtype=np_dtype)
-    arr = arr.reshape(height, width)
+    try:
+        if n_channel == 1:
+            arr = arr.reshape(height, width)
+        else:
+            arr = arr.reshape(height, width, n_channel)
+    except ValueError:
+        pass
     return arr
 
 
